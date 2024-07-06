@@ -17,11 +17,11 @@ use Stepapo\Crosstab\UI\FilterList\FilterList;
 use Stepapo\Crosstab\UI\MainComponent;
 use Stepapo\Crosstab\UI\RowPicker\RowPicker;
 use Stepapo\Crosstab\UI\ValuePicker\ValuePicker;
-use Stepapo\Crosstab\Utils;
 use Nette\InvalidArgumentException;
 use Nette\Neon\Neon;
 use Nette\Utils\FileSystem;
 use Nextras\Orm\Collection\ICollection;
+use Stepapo\Utils\ConfigProcessor;
 
 
 /**
@@ -65,7 +65,7 @@ class Crosstab extends CrosstabControl implements MainComponent
     public static function createFromNeon(string $file, array $params = []): Crosstab
     {
         $config = (array) Neon::decode(FileSystem::read($file));
-        $parsedConfig = Utils::replaceParams($config, $params);
+        $parsedConfig = ConfigProcessor::replaceParams($config, $params);
         return self::createFromArray((array) $parsedConfig);
     }
 
