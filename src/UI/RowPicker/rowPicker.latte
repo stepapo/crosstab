@@ -1,0 +1,10 @@
+{templateType Stepapo\Crosstab\UI\RowPicker\RowPickerTemplate}
+
+<div class="mb-2 responsive" n:snippet>
+    <div class="btn-group space">
+        <div class="btn-group-header">Řádky:</div>
+        <a n:foreach="$columns as $c" n:if="$c->cross && $columnColumn->name != $c->name" n:href="pick! row: $c->name" n:class="btn, btn-sm, ajax, $c->name == $row ? btn-primary : btn-secondary">
+            {$c->label}
+        </a>
+    </div>
+</div>

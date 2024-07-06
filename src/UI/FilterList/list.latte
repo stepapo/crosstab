@@ -1,0 +1,11 @@
+{templateType Stepapo\Crosstab\UI\FilterList\FilterListTemplate}
+
+{snippet}
+    {foreach $columns as $column}
+        {if $column->filter}
+            {if $column->cross && $column->name != $columnColumn->name && $column->name != $rowColumn->name}
+                {control 'filter-' . $column->name}
+            {/}
+        {/}
+    {/}
+{/}
