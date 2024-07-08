@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab\UI\FilterList;
 
 use Nette\Application\Attributes\Persistent;
-use Stepapo\Crosstab\UI\DataControl;
+use Nette\Application\UI\Multiplier;
 use Stepapo\Crosstab\UI\CrosstabControl;
 use Stepapo\Crosstab\UI\Filter\Filter;
-use Nette\Application\UI\Multiplier;
 
 
 /**

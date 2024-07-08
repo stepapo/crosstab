@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stepapo\Crosstab;
 
-use Nextras\Orm\Collection\ICollection;
-
 
 class Column
 {
@@ -235,7 +233,7 @@ class Column
 	}
 
 
-    public function getNextrasName(bool $withThis = true)
+    public function getNextrasName()
     {
         if (str_contains($this->columnName, '.')) {
             return str_replace('.', '->', $this->columnName);

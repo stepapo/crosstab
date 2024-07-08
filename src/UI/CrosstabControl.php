@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stepapo\Crosstab\UI;
 
+use Nextras\Orm\Collection\ICollection;
 use Stepapo\Crosstab\Column;
 use Stepapo\Crosstab\UI\Crosstab\Crosstab;
-use Nextras\Orm\Collection\ICollection;
 
 
 abstract class CrosstabControl extends DataControl

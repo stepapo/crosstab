@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stepapo\Crosstab\UI\Value;
 
+use Nextras\Orm\Entity\IEntity;
 use Stepapo\Crosstab\Column;
 use Stepapo\Crosstab\UI\CrosstabControlTemplate;
-use Nextras\Orm\Entity\IEntity;
 
 
 class ValueTemplate extends CrosstabControlTemplate

@@ -6,8 +6,6 @@ namespace Stepapo\Crosstab\UI;
 
 use Stepapo\Crosstab\Column;
 use Stepapo\Crosstab\Factory;
-use Stepapo\Crosstab\UI\Table\SimpleTable;
-use Stepapo\Crosstab\UI\Table\Table;
 use Stepapo\Crosstab\UI\ColumnPicker\ColumnPicker;
 use Stepapo\Crosstab\UI\ColumnPicker\SimpleColumnPicker;
 use Stepapo\Crosstab\UI\Filter\Filter;
@@ -16,6 +14,8 @@ use Stepapo\Crosstab\UI\FilterList\FilterList;
 use Stepapo\Crosstab\UI\FilterList\SimpleFilterList;
 use Stepapo\Crosstab\UI\RowPicker\RowPicker;
 use Stepapo\Crosstab\UI\RowPicker\SimpleRowPicker;
+use Stepapo\Crosstab\UI\Table\SimpleTable;
+use Stepapo\Crosstab\UI\Table\Table;
 use Stepapo\Crosstab\UI\ValuePicker\SimpleValuePicker;
 use Stepapo\Crosstab\UI\ValuePicker\ValuePicker;
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab\UI\Table;
 
 use Nette\Application\Attributes\Persistent;
-use Stepapo\Crosstab\UI\CrosstabControl;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
 use Nextras\Orm\Relationships\HasMany;
+use Stepapo\Crosstab\UI\CrosstabControl;
 
 
 /**

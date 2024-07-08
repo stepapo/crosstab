@@ -6,10 +6,10 @@ namespace Stepapo\Crosstab\UI;
 
 use Contributte\ImageStorage\ImageStorage;
 use Nette\Localization\Translator;
+use Nextras\Orm\Collection\ICollection;
 use Stepapo\Crosstab\Column;
 use Stepapo\Crosstab\Factory;
 use Stepapo\Crosstab\View;
-use Nextras\Orm\Collection\ICollection;
 
 
 interface MainComponent

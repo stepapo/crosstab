@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab\UI;
 
 use Contributte\ImageStorage\ImageStorage;
-use Nette\Localization\Translator;
-use Stepapo\Crosstab\Column;
-use Stepapo\Crosstab\Factory;
-use Stepapo\Crosstab\View;
 use Latte\Essential\RawPhpExtension;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Template;
+use Nette\Localization\Translator;
 use Nextras\Orm\Collection\ICollection;
+use Stepapo\Crosstab\Column;
+use Stepapo\Crosstab\Factory;
+use Stepapo\Crosstab\View;
 
 
 abstract class DataControl extends Control

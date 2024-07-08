@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab\UI;
 
 use Contributte\ImageStorage\ImageStorage;
-use Stepapo\Crosstab\Column;
-use Stepapo\Crosstab\View;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Security\User;
+use Stepapo\Crosstab\Column;
+use Stepapo\Crosstab\View;
 
 
 abstract class DataControlTemplate extends Template

@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab\UI\Crosstab;
 
 use Contributte\ImageStorage\ImageStorage;
-use Nette\Localization\Translator;
-use Stepapo\Crosstab\Column;
-use Stepapo\Crosstab\CrosstabView;
-use Stepapo\Crosstab\Option;
-use Stepapo\Crosstab\UI\CrosstabControl;
-use Stepapo\Crosstab\UI\CrosstabFactory;
-use Stepapo\Crosstab\UI\Table\Table;
-use Stepapo\Crosstab\UI\ColumnPicker\ColumnPicker;
-use Stepapo\Crosstab\UI\FilterList\FilterList;
-use Stepapo\Crosstab\UI\MainComponent;
-use Stepapo\Crosstab\UI\RowPicker\RowPicker;
-use Stepapo\Crosstab\UI\ValuePicker\ValuePicker;
 use Nette\InvalidArgumentException;
+use Nette\Localization\Translator;
 use Nette\Neon\Neon;
 use Nette\Utils\FileSystem;
 use Nextras\Orm\Collection\ICollection;
+use Stepapo\Crosstab\Column;
+use Stepapo\Crosstab\CrosstabView;
+use Stepapo\Crosstab\Option;
+use Stepapo\Crosstab\UI\ColumnPicker\ColumnPicker;
+use Stepapo\Crosstab\UI\CrosstabControl;
+use Stepapo\Crosstab\UI\CrosstabFactory;
+use Stepapo\Crosstab\UI\FilterList\FilterList;
+use Stepapo\Crosstab\UI\MainComponent;
+use Stepapo\Crosstab\UI\RowPicker\RowPicker;
+use Stepapo\Crosstab\UI\Table\Table;
+use Stepapo\Crosstab\UI\ValuePicker\ValuePicker;
 use Stepapo\Utils\ConfigProcessor;
 
 
@@ -65,8 +65,8 @@ class Crosstab extends CrosstabControl implements MainComponent
     public static function createFromNeon(string $file, array $params = []): Crosstab
     {
         $config = (array) Neon::decode(FileSystem::read($file));
-        $parsedConfig = ConfigProcessor::replaceParams($config, $params);
-        return self::createFromArray((array) $parsedConfig);
+		$config = ConfigProcessor::process($config, $params);
+        return self::createFromArray((array) $config);
     }
 
 
