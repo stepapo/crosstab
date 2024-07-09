@@ -27,7 +27,7 @@ abstract class DataControl extends Control
 
 	protected function createTemplate(?string $class = null): Template
 	{
-		$template = parent::createTemplate();
+		$template = parent::createTemplate($class);
 		$template->setTranslator($this->getTranslator());
 		$template->getLatte()->addExtension(new RawPhpExtension);
 		return $template;

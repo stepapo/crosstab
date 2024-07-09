@@ -9,8 +9,8 @@ use Nette\Application\UI\Control;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Security\User;
-use Stepapo\Crosstab\Column;
-use Stepapo\Crosstab\View;
+use Stepapo\Data\Column;
+use Stepapo\Dataset\View;
 
 
 abstract class DataControlTemplate extends Template
