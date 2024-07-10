@@ -1,0 +1,10 @@
+{templateType Stepapo\Crosstab\Control\ColumnPicker\ColumnPickerTemplate}
+
+<div class="my-1 no-wrap" n:snippet>
+    <div class="input-group input-group-sm">
+        <div class="btn btn-label">Sloupce:</div>
+        <a n:foreach="$columns as $c" n:if="$c->cross" n:href="pick! column: $c->name" n:class="btn, btn-sm, ajax, $c->name == $column ? btn-primary : btn-secondary">
+            {$c->label}
+        </a>
+    </div>
+</div>

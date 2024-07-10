@@ -2,33 +2,55 @@
 
 declare(strict_types=1);
 
-namespace Stepapo\Crosstab\UI\Table;
+namespace Stepapo\Crosstab\Control\Table;
 
 use Nette\Application\Attributes\Persistent;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
 use Nextras\Orm\Relationships\HasMany;
-use Stepapo\Crosstab\UI\CrosstabControl;
+use Stepapo\Crosstab\Control\Crosstab\CrosstabControl;
+use Stepapo\Data\Column;
+use Stepapo\Data\Control\DataControl;
 
 
 /**
  * @property-read TableTemplate $template
  */
-class SimpleTable extends CrosstabControl implements Table
+class TableControl extends DataControl
 {
-    /** @var callable[] */
-    public array $onSort = [];
-
-	#[Persistent]
-    public ?string $sort = null;
-
-	#[Persistent]
-    public ?string $direction = null;
+	#[Persistent] public ?string $sort = null;
+	#[Persistent] public ?string $direction = null;
+    /** @var callable[] */ public array $onSort = [];
 
 
-    public function render()
+	/** @param Column[] $columns */
+	public function __construct(
+		private CrosstabControl $main,
+		private array $columns,
+		private ICollection $collection,
+		private ICollection $rowTotalCollection,
+		private ICollection $columnTotalCollection,
+		private ICollection $totalCollection,
+	) {}
+
+
+	public function loadState(array $params): void
+	{
+		parent::loadState($params);
+		if (!$this->sort && !$this->direction) {
+			foreach ($this->columns as $column) {
+				if ($column->sort?->isDefault) {
+					$this->sort = $column->name;
+					$this->direction = $column->sort->direction;
+					break;
+				}
+			}
+		}
+	}
+
+
+	public function render()
     {
-        parent::render();
         $items = [];
         $columnHeaderItems = [];
         $min = null;
@@ -37,9 +59,9 @@ class SimpleTable extends CrosstabControl implements Table
         $rowMax = null;
         $columnMin = null;
         $columnMax = null;
-        foreach ($this->getCollection() as $item) {
-            $rowValue = $item->getRawValue($this->getRowColumn()->name);
-            $columnValue = $item->getRawValue($this->getColumnColumn()->name);
+        foreach ($this->collection as $item) {
+            $rowValue = $item->getRawValue($this->main->getRowColumn()->name);
+            $columnValue = $item->getRawValue($this->main->getColumnColumn()->name);
             if (!isset($items[$rowValue])) {
                 $items[$rowValue]['header'] = $item;
             }
@@ -47,7 +69,7 @@ class SimpleTable extends CrosstabControl implements Table
             if (!isset($columnHeaderItems[$columnValue])) {
                 $columnHeaderItems[$columnValue] = $item;
             }
-            $value = $this->getValue($item, $this->getValueColumn()->columnName) ? $this->getValue($item, $this->getValueColumn()->columnName)[0] : null;
+            $value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
             $type = isset($item->type);
             if ($value !== null && ($min === null || $value < $min)) {
                 $min = $value;
@@ -56,10 +78,10 @@ class SimpleTable extends CrosstabControl implements Table
                 $max = $value;
             }
         }
-        if ($this->getRowTotalCollection()) {
-            foreach ($this->getRowTotalCollection() as $item) {
-                $items[$item->getRawValue($this->getRowColumn()->name)]['total'] = $item;
-                $value = $this->getValue($item, $this->getValueColumn()->columnName) ? $this->getValue($item, $this->getValueColumn()->columnName)[0] : null;
+        if ($this->rowTotalCollection) {
+            foreach ($this->rowTotalCollection as $item) {
+                $items[$item->getRawValue($this->main->getRowColumn()->name)]['total'] = $item;
+                $value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
                 $type = isset($item->type);
                 if ($value !== null && ($rowMin === null || $value < $rowMin)) {
                     $rowMin = $value;
@@ -69,12 +91,11 @@ class SimpleTable extends CrosstabControl implements Table
                 }
             }
         }
-        if ($this->getColumnTotalCollection()) {
+        if ($this->columnTotalCollection) {
             $columnTotals = [];
-            foreach ($this->getColumnTotalCollection() as $item) {
-                $columnTotals[$item->getRawValue($this->getColumnColumn()->name)] = $item;
-                $value = $this->getValue($item, $this->getValueColumn()->columnName) ? $this->getValue($item, $this->getValueColumn()->columnName)[0] : null;
-                $type = isset($item->type);
+            foreach ($this->columnTotalCollection as $item) {
+                $columnTotals[$item->getRawValue($this->main->getColumnColumn()->name)] = $item;
+                $value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
                 if ($value !== null && ($columnMin === null || $value < $columnMin)) {
                     $columnMin = $value;
                 }
@@ -84,21 +105,21 @@ class SimpleTable extends CrosstabControl implements Table
             }
             $this->template->columnTotals = $columnTotals;
         }
-        if ($this->getTotalCollection()) {
-            $this->template->total = $this->getTotalCollection()->limitBy(1)->fetch();
+        if ($this->totalCollection) {
+            $this->template->total = $this->totalCollection->limitBy(1)->fetch();
         }
         $collator = new \Collator('cs_CZ');
         uasort($columnHeaderItems, function($a, $b) use($collator) {
-            $aHeader = $this->getValue($a, $this->getColumnColumn()->columnName)[0];
-            $bHeader = $this->getValue($b, $this->getColumnColumn()->columnName)[0];
+            $aHeader = $this->getValue($a, $this->main->getColumnColumn()->columnName)[0];
+            $bHeader = $this->getValue($b, $this->main->getColumnColumn()->columnName)[0];
             return is_numeric($aHeader) && is_numeric($bHeader)
                 ? $aHeader <=> $bHeader
                 : $collator->compare($aHeader, $bHeader);
         });
         if ($this->sort) {
             uasort($items, function($a, $b) use ($collator) {
-                $aHeader = $this->getValue($a['header'], $this->getRowColumn()->columnName)[0];
-                $bHeader = $this->getValue($b['header'], $this->getRowColumn()->columnName)[0];
+                $aHeader = $this->getValue($a['header'], $this->main->getRowColumn()->columnName)[0];
+                $bHeader = $this->getValue($b['header'], $this->main->getRowColumn()->columnName)[0];
                 if ($this->sort == 'header') {
                     if (is_numeric($aHeader) && is_numeric($bHeader)) {
                         return $this->direction == ICollection::ASC
@@ -111,8 +132,8 @@ class SimpleTable extends CrosstabControl implements Table
                             ) * ($this->direction == ICollection::ASC ? 1 : -1);
                     }
                 } else {
-                    $aVal = (isset($a[$this->sort]) ? $this->getValue($a[$this->sort], $this->getValueColumn()->columnName) : 0);
-                    $bVal = (isset($b[$this->sort]) ? $this->getValue($b[$this->sort], $this->getValueColumn()->columnName) : 0);
+                    $aVal = (isset($a[$this->sort]) ? $this->getValue($a[$this->sort], $this->main->getValueColumn()->columnName) : 0);
+                    $bVal = (isset($b[$this->sort]) ? $this->getValue($b[$this->sort], $this->main->getValueColumn()->columnName) : 0);
                     if ($aVal == $bVal) {
                         return is_numeric($aHeader) && is_numeric($bHeader)
                             ? $aHeader <=> $bHeader
@@ -125,6 +146,13 @@ class SimpleTable extends CrosstabControl implements Table
                 }
             });
         }
+		$this->template->rowTotalCollection = $this->rowTotalCollection;
+		$this->template->columnTotalCollection = $this->columnTotalCollection;
+		$this->template->totalCollection = $this->totalCollection;
+		$this->template->view = $this->main->getView();
+		$this->template->columnColumn = $this->main->getColumnColumn();
+		$this->template->rowColumn = $this->main->getRowColumn();
+		$this->template->valueColumn = $this->main->getValueColumn();
         $this->template->max = $max;
         $this->template->min = $min;
         $this->template->rowMax = $rowMax;
@@ -135,8 +163,10 @@ class SimpleTable extends CrosstabControl implements Table
         $this->template->items = $items;
         $this->template->sort = $this->sort;
         $this->template->direction = $this->direction;
-        $this->template->render($this->getView()->tableTemplate);
+		$this->template->control = $this;
+        $this->template->render($this->main->getView()->tableTemplate);
     }
+
 
     public function getValue(IEntity $entity, $columnName)
     {
@@ -163,6 +193,7 @@ class SimpleTable extends CrosstabControl implements Table
         }
         return $values;
     }
+
 
     public function handleSort(?string $sort = null, ?string $direction = ICollection::ASC)
     {
