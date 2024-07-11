@@ -5,17 +5,15 @@
         <div class="btn btn-label">Hodnoty:</div>
         {if $valueCollapse}
             {if $valueCollapse == 1}
-{*                <div class="input-group input-group-sm">*}
-                    <a n:href="pick! value: $value" class="btn btn-sm btn-primary text-left ajax">{$columns[$value]->label}</a>
-                    <button class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a n:foreach="$columns as $c" n:if="!$c->cross && !$c->hide" n:href="pick! value: $c->name" n:class="dropdown-item, ajax">
-                            {$c->label}
-                        </a>
-                    </div>
-{*                </div>*}
+                <a n:href="pick! value: $value" class="btn btn-sm btn-primary text-left ajax">{$columns[$value]->label}</a>
+                <button class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a n:foreach="$columns as $c" n:if="!$c->cross && !$c->hide" n:href="pick! value: $c->name" n:class="dropdown-item, ajax">
+                        {$c->label}
+                    </a>
+                </div>
             {else}
                 {var $selected = !$value}
                 {var $it = 0}

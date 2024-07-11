@@ -33,7 +33,7 @@ class RowPickerControl extends DataControl
 	}
 
 
-	public function render()
+	public function render(): void
     {
         $this->template->row = $this->row;
 		$this->template->columns = $this->columns;

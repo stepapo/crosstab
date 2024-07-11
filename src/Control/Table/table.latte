@@ -4,13 +4,16 @@
     {$valueColumn->description}:
 </p>
 
+<style>
+</style>
+
 <div class="responsive mt-3 override-padding">
     <table class="table table-bordered override-padding" n:snippet>
         <thead>
         <tr>
-            <th{if $rowColumn->width} style="width: {$rowColumn->width}px"{/} n:class="$rowColumn->align ? 'text-' . $rowColumn->align : 'text-left'">
+            <th{if $rowColumn->width} style="width: {$rowColumn->width}px"{/} n:class="$rowColumn->align ? 'text-' . $rowColumn->align">
                 {if $rowColumn->sort}
-                    {php $newDirection = $sort == 'header' ? (!$direction || $direction == Nextras\Orm\Collection\ICollection::ASC ? Nextras\Orm\Collection\ICollection::DESC : Nextras\Orm\Collection\ICollection::ASC) : $rowColumn->sort->direction}
+                    {var $newDirection = $sort == 'header' ? (!$direction || $direction == Nextras\Orm\Collection\ICollection::ASC ? Nextras\Orm\Collection\ICollection::DESC : Nextras\Orm\Collection\ICollection::ASC) : $rowColumn->sort->direction}
                     <a n:href="sort! 'header', $newDirection" class="ajax" class="no-wrap">
                         {$rowColumn->label}
                         {if $sort == 'header'}
@@ -22,11 +25,11 @@
                 {/}
             </th>
             {foreach $columnHeaderItems as $columnHeaderItem}
-                {php $id = $columnHeaderItem->getRawValue($columnColumn->name)}
-                {php $value = $control->getValue($columnHeaderItem, $columnColumn->columnName)}
-                <th n:class="column-header, $sort == $id ? column-header-highlight, 'text-' . $valueColumn->align"{if $valueColumn->width} style="width: {$column->width}px"{/}>
+                {var $id = $columnHeaderItem->getRawValue($columnColumn->name)}
+                {var $value = $control->getValue($columnHeaderItem, $columnColumn->columnName)}
+                <th n:class="column-header, $sort == $id ? column-header-highlight, 'text-' . $valueColumn->align"{if $valueColumn->width} style="width: {$valueColumn->width}px"{/}>
                     {if $valueColumn->sort}
-                        {php $newDirection = $sort == $id ? (!$direction || $direction == Nextras\Orm\Collection\ICollection::ASC ? Nextras\Orm\Collection\ICollection::DESC : Nextras\Orm\Collection\ICollection::ASC) : $valueColumn->sort->direction}
+                        {var $newDirection = $sort == $id ? (!$direction || $direction == Nextras\Orm\Collection\ICollection::ASC ? Nextras\Orm\Collection\ICollection::DESC : Nextras\Orm\Collection\ICollection::ASC) : $valueColumn->sort->direction}
                         <a n:href="sort! $id, $newDirection" class="ajax">
                             {include $columnColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $columnHeaderItem, 'value' => $value, 'linkArgs' => null, 'column' => $columnColumn}
                             {if $columnColumn->name != 'type' && $sort == $id}
@@ -38,9 +41,9 @@
                     {/}
                 </th>
             {/}
-            <th n:if="$rowTotalCollection" class="text-{$valueColumn->align}"{if $valueColumn->width} style="width: {$column->width}px"{/}>
+            <th n:if="$rowTotalCollection" class="text-{$valueColumn->align}"{if $valueColumn->width} style="width: {$valueColumn->width}px"{/}>
                 {if $valueColumn->sort}
-                    {php $newDirection = $sort == 'total' ? (!$direction || $direction == Nextras\Orm\Collection\ICollection::ASC ? Nextras\Orm\Collection\ICollection::DESC : Nextras\Orm\Collection\ICollection::ASC) : $valueColumn->sort->direction}
+                    {var $newDirection = $sort == 'total' ? (!$direction || $direction == Nextras\Orm\Collection\ICollection::ASC ? Nextras\Orm\Collection\ICollection::DESC : Nextras\Orm\Collection\ICollection::ASC) : $valueColumn->sort->direction}
                     <a n:href="sort! 'total', $newDirection" class="ajax">
                         Celkem
                         {if $sort == 'total'}
@@ -62,33 +65,33 @@
             </td>
             {foreach $columnHeaderItems as $name => $columnHeaderItem}
                 {var $item = $cols[$name] ?? null}
-                <td n:inner-if="$item" n:class="'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName) && $control->getValue($item, $valueColumn->columnName)[0]}background: rgb(var(--cms-primary-rgb), {0.25 * ($min == $max ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $min) / ($max - $min))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$column->width}px{/}">
+                <td n:inner-if="$item" n:class="'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName) && $control->getValue($item, $valueColumn->columnName)[0]}background: rgb(var(--bs-primary-rgb), {0.1 + 0.2 * ($min == $max ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $min) / ($max - $min))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$valueColumn->width}px{/}">
                     {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
                     {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
                 </td>
             {/}
             {if $rowTotalCollection}
                 {var $item = $items[$rowId]['total']}
-                <td n:inner-if="$item" n:class="row-total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName)}background: rgb(var(--cms-secondary-rgb), {0.5 * ($rowMin == $rowMax ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $rowMin) / ($rowMax - $rowMin))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$valueColumn->width}px{/}">
+                <td n:inner-if="$item" n:class="row-total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName)}background: rgb(var(--cms-secondary-rgb), {0.1 + 0.2 * ($rowMin == $rowMax ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $rowMin) / ($rowMax - $rowMin))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$valueColumn->width}px{/}">
                     {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
                     {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
                 </td>
             {/}
         </tr>
         <tr n:if="$columnTotalCollection">
-            <td n:class="nobg, $rowColumn->align ? 'text-' . $rowColumn->align">
+            <td n:class="$rowColumn->align ? 'text-' . $rowColumn->align">
                 Celkem
             </td>
             {foreach $columnHeaderItems as $name => $columnHeaderItem}
                 {var $item = $columnTotals[$name] ?? null}
-                <td n:inner-if="$item" n:class="column-total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName)}background: rgb(var(--cms-secondary-rgb), {0.5 * ($columnMin == $columnMax ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $columnMin) / ($columnMax - $columnMin))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$column->width}px{/}">
+                <td n:inner-if="$item" n:class="column-total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName)}background: rgb(var(--cms-secondary-rgb), {0.1 + 0.2 * ($columnMin == $columnMax ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $columnMin) / ($columnMax - $columnMin))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$valueColumn->width}px{/}">
                     {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
                     {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
                 </td>
             {/}
             {if $rowTotalCollection}
                 {var $item = $total ?? null}
-                <td n:if="$rowTotalCollection" n:inner-if="$item" n:class="total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="background: rgb(var(--cms-secondary-rgb), 0.7);{if $valueColumn->width} width: {$column->width}px{/}">
+                <td n:if="$rowTotalCollection" n:inner-if="$item" n:class="total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="background: rgb(var(--cms-secondary-rgb), 0.5);{if $valueColumn->width} width: {$valueColumn->width}px{/}">
                     {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
                     {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
                 </td>

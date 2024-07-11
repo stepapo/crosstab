@@ -7,12 +7,12 @@ namespace Stepapo\Crosstab\Control\Crosstab;
 use Nette\Application\BadRequestException;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Model\IModel;
-use Stepapo\Crosstab\Crosstab;
-use Stepapo\Crosstab\CrosstabView;
 use Stepapo\Crosstab\Control\ColumnPicker\ColumnPickerControl;
 use Stepapo\Crosstab\Control\RowPicker\RowPickerControl;
 use Stepapo\Crosstab\Control\Table\TableControl;
 use Stepapo\Crosstab\Control\ValuePicker\ValuePickerControl;
+use Stepapo\Crosstab\Crosstab;
+use Stepapo\Crosstab\CrosstabView;
 use Stepapo\Data\Column;
 use Stepapo\Data\Control\DataControl;
 use Stepapo\Data\Control\FilterList\FilterListControl;
@@ -38,7 +38,7 @@ class CrosstabControl extends DataControl implements MainComponent
     ) {}
 
 
-    public function render()
+    public function render(): void
     {
 		$this->template->rowColumn = $this->getRowColumn();
 		$this->template->columnColumn = $this->getColumnColumn();
@@ -230,7 +230,6 @@ class CrosstabControl extends DataControl implements MainComponent
 		if (!isset($this->rowCollection)) {
 			$repositoryName = $this->crosstab->entityName;
 			$row = $this->getComponent('rowPicker')->row ?? $this->crosstab->defaultRow;
-			$column = $this->getComponent('columnPicker')->column ?? $this->crosstab->defaultColumn;
 			$addBy = true;
 			foreach ($this->getCrossColumnNames() as $columnName) {
 				$c = $this->crosstab->columns[$columnName];

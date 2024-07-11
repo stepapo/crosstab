@@ -33,7 +33,7 @@ class ColumnPickerControl extends DataControl
 	}
 
 
-    public function render()
+    public function render(): void
     {
         $this->template->column = $this->column;
 		$this->template->columns = $this->columns;

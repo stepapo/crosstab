@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stepapo\Crosstab\Control\Table;
 
+use Collator;
 use Nette\Application\Attributes\Persistent;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
@@ -49,7 +50,7 @@ class TableControl extends DataControl
 	}
 
 
-	public function render()
+	public function render(): void
     {
         $items = [];
         $columnHeaderItems = [];
@@ -70,7 +71,6 @@ class TableControl extends DataControl
                 $columnHeaderItems[$columnValue] = $item;
             }
             $value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
-            $type = isset($item->type);
             if ($value !== null && ($min === null || $value < $min)) {
                 $min = $value;
             }
@@ -82,7 +82,6 @@ class TableControl extends DataControl
             foreach ($this->rowTotalCollection as $item) {
                 $items[$item->getRawValue($this->main->getRowColumn()->name)]['total'] = $item;
                 $value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
-                $type = isset($item->type);
                 if ($value !== null && ($rowMin === null || $value < $rowMin)) {
                     $rowMin = $value;
                 }
@@ -108,7 +107,7 @@ class TableControl extends DataControl
         if ($this->totalCollection) {
             $this->template->total = $this->totalCollection->limitBy(1)->fetch();
         }
-        $collator = new \Collator('cs_CZ');
+        $collator = new Collator('cs_CZ');
         uasort($columnHeaderItems, function($a, $b) use($collator) {
             $aHeader = $this->getValue($a, $this->main->getColumnColumn()->columnName)[0];
             $bHeader = $this->getValue($b, $this->main->getColumnColumn()->columnName)[0];
@@ -168,7 +167,7 @@ class TableControl extends DataControl
     }
 
 
-    public function getValue(IEntity $entity, $columnName)
+    public function getValue(IEntity $entity, $columnName): ?array
     {
         $columnNames = explode('.', $columnName);
         $values = [$entity];
@@ -195,7 +194,7 @@ class TableControl extends DataControl
     }
 
 
-    public function handleSort(?string $sort = null, ?string $direction = ICollection::ASC)
+    public function handleSort(?string $sort = null, ?string $direction = ICollection::ASC): void
     {
         $this->sort = $sort;
         $this->direction = $direction;

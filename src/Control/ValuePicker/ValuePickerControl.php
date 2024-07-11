@@ -34,7 +34,7 @@ class ValuePickerControl extends DataControl
 	}
 
 
-	public function render()
+	public function render(): void
     {
         $this->template->value = $this->value;
 		$this->template->columns = $this->columns;

@@ -10,7 +10,7 @@ use Stepapo\Utils\Schematic;
 
 class CrosstabView extends Schematic implements View
 {
-	public const DEFAULT_VIEW = [
+	public const array DEFAULT_VIEW = [
 		'crosstabTemplate' => __DIR__ . '/Control/Crosstab/crosstab.latte',
 		'tableTemplate' => __DIR__ . '/Control/Table/table.latte',
 		'filterListTemplate' => __DIR__ . '/../../data/src/Control/FilterList/list.latte',
