@@ -137,7 +137,7 @@ class CrosstabControl extends DataControl implements MainComponent
 				$this->rowCollection = $this->getRowCollection()->findBy($column->filter->options[$value]->condition);
 				$this->totalCollection = $this->getTotalCollection()->findBy($column->filter->options[$value]->condition);
             } else {
-                $this->crosstab->collection = $this->getCollection()->findBy([$column->name => $value]);
+                $this->collection = $this->getCollection()->findBy([$column->name => $value]);
 				$this->columnCollection = $this->getColumnCollection()->findBy([$column->name => $value]);
 				$this->rowCollection = $this->getRowCollection()->findBy([$column->name => $value]);
 				$this->totalCollection = $this->getTotalCollection()->findBy([$column->name => $value]);
