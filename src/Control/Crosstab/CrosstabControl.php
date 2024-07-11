@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stepapo\Crosstab\Control\Crosstab;
 
+use Nette\Application\BadRequestException;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Model\IModel;
 use Stepapo\Crosstab\Crosstab;
@@ -134,7 +135,7 @@ class CrosstabControl extends DataControl implements MainComponent
                 $this->collection = $this->getCollection()->findBy($column->filter->options[$value]->condition);
 				$this->columnCollection = $this->getColumnCollection()->findBy($column->filter->options[$value]->condition);
 				$this->rowCollection = $this->getRowCollection()->findBy($column->filter->options[$value]->condition);
-				$this->totalCollection = $this->crosstab->totalCollection->findBy($column->filter->options[$value]->condition);
+				$this->totalCollection = $this->getTotalCollection()->findBy($column->filter->options[$value]->condition);
             } else {
                 $this->crosstab->collection = $this->getCollection()->findBy([$column->name => $value]);
 				$this->columnCollection = $this->getColumnCollection()->findBy([$column->name => $value]);
@@ -153,23 +154,32 @@ class CrosstabControl extends DataControl implements MainComponent
     }
 
 
-    public function getRowColumn()
+    public function getRowColumn(): Column
     {
 		$column = $this->getComponent('rowPicker')->row;
+		if (!isset($this->crosstab->columns[$column])) {
+			throw new BadRequestException;
+		}
 		return $this->crosstab->columns[$column];
     }
 
 
-	public function getColumnColumn()
+	public function getColumnColumn(): Column
     {
 		$column = $this->getComponent('columnPicker')->column;
+		if (!isset($this->crosstab->columns[$column])) {
+			throw new BadRequestException;
+		}
 		return $this->crosstab->columns[$column];
     }
 
 
-	public function getValueColumn()
+	public function getValueColumn(): Column
     {
 		$column = $this->getComponent('valuePicker')->value;
+		if (!isset($this->crosstab->columns[$column])) {
+			throw new BadRequestException;
+		}
 		return $this->crosstab->columns[$column];
     }
 
@@ -209,7 +219,6 @@ class CrosstabControl extends DataControl implements MainComponent
 				}
 			}
 			$repositoryName .= 'Repository';
-			bdump($repositoryName);
 			$this->collection = $this->orm->getRepositoryByName($repositoryName)->findAll();
 		}
 		return $this->collection;
@@ -239,7 +248,6 @@ class CrosstabControl extends DataControl implements MainComponent
 				}
 			}
 			$repositoryName .= 'Repository';
-			bdump($repositoryName);
 			$this->rowCollection = $this->orm->getRepositoryByName($repositoryName)->findAll();
 		}
 		return $this->rowCollection;
@@ -268,7 +276,6 @@ class CrosstabControl extends DataControl implements MainComponent
 				}
 			}
 			$repositoryName .= 'Repository';
-			bdump($repositoryName);
 			$this->columnCollection = $this->orm->getRepositoryByName($repositoryName)->findAll();
 		}
 		return $this->columnCollection;
@@ -296,7 +303,6 @@ class CrosstabControl extends DataControl implements MainComponent
 				}
 			}
 			$repositoryName .= $repositoryName === $this->crosstab->entityName ? 'TotalRepository' : 'Repository';
-			bdump($repositoryName);
 			$this->totalCollection = $this->orm->getRepositoryByName($repositoryName)->findAll();
 		}
 		return $this->totalCollection;
