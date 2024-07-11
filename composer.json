@@ -16,7 +16,7 @@
     "require": {
         "php": ">=8.1",
         "ext-intl": "*",
-        "stepapo/data": "^1.0"
+        "stepapo/data": "dev-main"
     },
     "autoload": {
         "psr-4": {
