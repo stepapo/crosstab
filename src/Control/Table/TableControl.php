@@ -6,6 +6,7 @@ namespace Stepapo\Crosstab\Control\Table;
 
 use Collator;
 use Nette\Application\Attributes\Persistent;
+use Nette\Forms\Form;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
 use Nextras\Orm\Relationships\HasMany;
@@ -52,6 +53,7 @@ class TableControl extends DataControl
 
 	public function render(): void
     {
+		Form::
         $items = [];
         $columnHeaderItems = [];
         $min = null;
