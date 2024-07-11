@@ -53,7 +53,6 @@ class TableControl extends DataControl
 
 	public function render(): void
     {
-		Form::
         $items = [];
         $columnHeaderItems = [];
         $min = null;
