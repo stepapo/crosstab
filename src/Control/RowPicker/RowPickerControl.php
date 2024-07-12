@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab\Control\RowPicker;
 
 use Nette\Application\Attributes\Persistent;
+use Nette\Application\BadRequestException;
 use Stepapo\Crosstab\Control\Crosstab\CrosstabControl;
 use Stepapo\Data\Control\DataControl;
 
@@ -45,6 +46,9 @@ class RowPickerControl extends DataControl
     public function handlePick(?string $row = null): void
     {
         $this->row = $row;
+		if (!isset($this->columns[$row]) || $this->columns[$row]->hide) {
+			throw new BadRequestException;
+		}
         if ($this->presenter->isAjax()) {
             $this->onPick($this);
             $this->redrawControl();

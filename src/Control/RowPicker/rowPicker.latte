@@ -3,7 +3,7 @@
 <div class="my-1 no-wrap" n:snippet>
     <div class="input-group input-group-sm">
         <div class="btn btn-label">Řádky:</div>
-        <a n:foreach="$columns as $c" n:if="$c->cross" n:href="pick! row: $c->name" n:class="btn, btn-sm, ajax, $c->name == $row ? btn-primary : btn-secondary">
+        <a n:foreach="$columns as $c" n:if="$c->cross && !$c->hide" n:href="pick! row: $c->name" n:class="btn, btn-sm, ajax, $c->name == $row ? btn-primary : btn-secondary">
             {$c->label}
         </a>
     </div>

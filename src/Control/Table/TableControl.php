@@ -6,7 +6,7 @@ namespace Stepapo\Crosstab\Control\Table;
 
 use Collator;
 use Nette\Application\Attributes\Persistent;
-use Nette\Forms\Form;
+use Nette\Application\BadRequestException;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
 use Nextras\Orm\Relationships\HasMany;
@@ -199,6 +199,9 @@ class TableControl extends DataControl
     {
         $this->sort = $sort;
         $this->direction = $direction;
+		if (!isset($this->columns[$sort]) || $this->columns[$sort]->hide) {
+			throw new BadRequestException;
+		}
         if ($this->presenter->isAjax()) {
             $this->onSort($this);
             $this->redrawControl();
