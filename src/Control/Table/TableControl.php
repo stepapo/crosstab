@@ -33,21 +33,16 @@ class TableControl extends DataControl
 		private ICollection $rowTotalCollection,
 		private ICollection $columnTotalCollection,
 		private ICollection $totalCollection,
+		private string $defaultSort,
+		private string $defaultDirection,
 	) {}
 
 
 	public function loadState(array $params): void
 	{
 		parent::loadState($params);
-		if (!$this->sort && !$this->direction) {
-			foreach ($this->columns as $column) {
-				if ($column->sort?->isDefault) {
-					$this->sort = $column->name;
-					$this->direction = $column->sort->direction;
-					break;
-				}
-			}
-		}
+		$this->sort = $this->sort ?: $this->defaultSort;
+		$this->direction = $this->direction ?: $this->defaultDirection;
 	}
 
 
@@ -199,9 +194,6 @@ class TableControl extends DataControl
     {
         $this->sort = $sort;
         $this->direction = $direction;
-		if (!isset($this->columns[$sort]) || $this->columns[$sort]->hide) {
-			throw new BadRequestException;
-		}
         if ($this->presenter->isAjax()) {
             $this->onSort($this);
             $this->redrawControl();

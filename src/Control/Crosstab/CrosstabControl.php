@@ -70,6 +70,8 @@ class CrosstabControl extends DataControl implements MainComponent
 			$this->getRowCollection(),
 			$this->getColumnCollection(),
 			$this->getTotalCollection(),
+			$this->crosstab->defaultSort,
+			$this->crosstab->defaultDirection,
 		);
         $control->onSort[] = function (TableControl $table) {
             $this->redrawControl();
