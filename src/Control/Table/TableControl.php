@@ -6,7 +6,6 @@ namespace Stepapo\Crosstab\Control\Table;
 
 use Collator;
 use Nette\Application\Attributes\Persistent;
-use Nette\Application\BadRequestException;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
 use Nextras\Orm\Relationships\HasMany;
