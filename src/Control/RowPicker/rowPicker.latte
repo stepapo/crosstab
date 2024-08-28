@@ -1,10 +1,26 @@
 {templateType Stepapo\Crosstab\Control\RowPicker\RowPickerTemplate}
-
-<div class="my-1 no-wrap" n:snippet>
-    <div class="input-group input-group-sm">
-        <div class="btn btn-label">Řádky:</div>
-        <a n:foreach="$columns as $c" n:if="$c->cross && !$c->hide" n:href="pick! row: $c->name" n:class="btn, btn-sm, ajax, $c->name == $row ? btn-primary : btn-secondary">
-            {$c->label}
-        </a>
+<div class="my-1 table-responsive" n:snippet>
+    <div class="btn-toolbar flex-nowrap">
+        <div class="btn btn-sm btn-label">Řádky:</div>
+        <div class="d-none d-lg-flex">
+            <a n:foreach="$columns as $c" n:if="$c->cross && !$c->hide" n:href="pick! row: $c->name" n:class="btn, btn-sm, ms-1, ajax, $c->name == $row ? btn-primary : btn-secondary">
+                {$c->label}
+            </a>
+        </div>
+        <div class="d-flex d-lg-none">
+            <a n:href="pick! row: $row" class="btn btn-sm btn-primary ms-1 text-start ajax">
+                {_$columns[$row]->label}
+            </a>
+            <button class="btn btn-sm btn-secondary ms-1 dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                {foreach $columns as $c}
+                    <a n:href="pick! row: $c->name" n:if="$c->cross && !$c->hide" n:class="dropdown-item, ajax">
+                        {_$c->label}
+                    </a>
+                {/}
+            </div>
+        </div>
     </div>
 </div>
