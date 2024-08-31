@@ -60,21 +60,18 @@
         <tr n:foreach="$items as $rowId => $cols">
             <td n:class="nobg, no-wrap, $rowColumn->align ? 'text-' . $rowColumn->align">
                 {var $item = $items[$rowId]['header']}
-                {var $linkArgs = $rowColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $rowColumn->link->args)}
-                {include $rowColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $rowColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $rowColumn}
+                {include $rowColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $rowColumn->columnName), 'column' => $rowColumn}
             </td>
             {foreach $columnHeaderItems as $name => $columnHeaderItem}
                 {var $item = $cols[$name] ?? null}
                 <td n:inner-if="$item" n:class="'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName) && $control->getValue($item, $valueColumn->columnName)[0]}background: rgb(var(--bs-primary-rgb), {0.1 + 0.2 * ($min == $max ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $min) / ($max - $min))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$valueColumn->width}px{/}">
-                    {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
-                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
+                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'column' => $valueColumn}
                 </td>
             {/}
             {if $rowTotalCollection}
                 {var $item = $items[$rowId]['total']}
                 <td n:inner-if="$item" n:class="row-total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName)}background: rgb(var(--cms-secondary-rgb), {0.1 + 0.2 * ($rowMin == $rowMax ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $rowMin) / ($rowMax - $rowMin))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$valueColumn->width}px{/}">
-                    {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
-                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
+                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'column' => $valueColumn}
                 </td>
             {/}
         </tr>
@@ -85,15 +82,13 @@
             {foreach $columnHeaderItems as $name => $columnHeaderItem}
                 {var $item = $columnTotals[$name] ?? null}
                 <td n:inner-if="$item" n:class="column-total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="{if $item && $control->getValue($item, $valueColumn->columnName)}background: rgb(var(--cms-secondary-rgb), {0.1 + 0.2 * ($columnMin == $columnMax ? 1 : ($control->getValue($item, $valueColumn->columnName)[0] - $columnMin) / ($columnMax - $columnMin))|number:2,'.',''|noescape});{/}{if $valueColumn->width}width: {$valueColumn->width}px{/}">
-                    {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
-                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
+                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'column' => $valueColumn}
                 </td>
             {/}
             {if $rowTotalCollection}
                 {var $item = $total ?? null}
                 <td n:if="$rowTotalCollection" n:inner-if="$item" n:class="total, 'text-' . $valueColumn->align, !$item || $control->getValue($item, $valueColumn->columnName) === null ? empty" style="background: rgb(var(--cms-secondary-rgb), 0.5);{if $valueColumn->width} width: {$valueColumn->width}px{/}">
-                    {var $linkArgs = $valueColumn->link?->args ? array_map(fn($a) => $control->getValue($item, $a), $valueColumn->link->args)}
-                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'linkArgs' => $linkArgs, 'column' => $valueColumn}
+                    {include $valueColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $item, 'value' => $control->getValue($item, $valueColumn->columnName), 'column' => $valueColumn}
                 </td>
             {/}
         </tr>
