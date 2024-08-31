@@ -21,7 +21,7 @@ class TableControl extends DataControl
 {
 	#[Persistent] public ?string $sort = null;
 	#[Persistent] public ?string $direction = null;
-    /** @var callable[] */ public array $onSort = [];
+    /** @var \Closure[] */ public array $onSort = [];
 
 
 	/** @param Column[] $columns */
