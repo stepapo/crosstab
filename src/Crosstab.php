@@ -18,7 +18,7 @@ class Crosstab extends Schematic
 	public string $defaultColumn;
 	public string $defaultValue;
 	public string $defaultSort = 'header';
-	public string $defaultDirection = 'ASC';
+	public string $defaultDirection = 'asc';
 	public ?int $valueCollapse = null;
 	/** @var Column[] */ #[ArrayOfType(Column::class)] public array $columns;
 	#[Type(CrosstabView::class), DefaultFromSchematic(CrosstabView::class)] public CrosstabView $view;

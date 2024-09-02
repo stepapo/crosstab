@@ -12,6 +12,7 @@
         <thead>
         <tr>
             <th{if $rowColumn->width} style="width: {$rowColumn->width}px"{/} n:class="$rowColumn->align ? 'text-' . $rowColumn->align">
+                {dump $rowColumn}
                 {if $rowColumn->sort}
                     {var $newDirection = $sort == 'header' ? (!$direction || $direction == Nextras\Orm\Collection\ICollection::ASC ? Nextras\Orm\Collection\ICollection::DESC : Nextras\Orm\Collection\ICollection::ASC) : $rowColumn->sort->direction}
                     <a n:href="sort! 'header', $newDirection" class="ajax" class="no-wrap">
