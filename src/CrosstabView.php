@@ -30,8 +30,8 @@ class CrosstabView extends Schematic implements View
 	public string $valueTemplate = self::DEFAULT_VIEW['valueTemplate'];
 
 
-	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false): static
+	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false, mixed $parentKey = null): static
 	{
-		return parent::createFromArray(array_merge(self::DEFAULT_VIEW, (array) $config), $key, $skipDefaults);
+		return parent::createFromArray(array_merge(self::DEFAULT_VIEW, (array) $config), $key, $skipDefaults, $parentKey);
 	}
 }
