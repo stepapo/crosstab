@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab;
 
 use Stepapo\Data\View;
-use Stepapo\Utils\Schematic;
+use Stepapo\Utils\Config;
 
 
-class CrosstabView extends Schematic implements View
+class CrosstabView extends Config implements View
 {
 	public const array DEFAULT_VIEW = [
 		'crosstabTemplate' => __DIR__ . '/Control/Crosstab/crosstab.latte',
