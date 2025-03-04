@@ -158,6 +158,7 @@ class TableControl extends DataControl
         $this->template->sort = $this->sort;
         $this->template->direction = $this->direction;
 		$this->template->control = $this;
+		$this->template->main = $this->main;
         $this->template->render($this->main->getView()->tableTemplate);
     }
 
