@@ -17,7 +17,7 @@ use Stepapo\Data\Control\DataControl;
 class RowPickerControl extends DataControl
 {
 	#[Persistent] public ?string $row = null;
-    public array $onPick = [];
+	public array $onPick = [];
 
 
 	public function __construct(
@@ -35,23 +35,23 @@ class RowPickerControl extends DataControl
 
 
 	public function render(): void
-    {
-        $this->template->row = $this->row;
+	{
+		$this->template->row = $this->row;
 		$this->template->columns = $this->columns;
 		$this->template->columnColumn = $this->main->getColumnColumn();
-        $this->template->render($this->main->getView()->rowPickerTemplate);
-    }
+		$this->template->render($this->main->getView()->rowPickerTemplate);
+	}
 
 
-    public function handlePick(?string $row = null): void
-    {
-        $this->row = $row;
+	public function handlePick(?string $row = null): void
+	{
+		$this->row = $row;
 		if (!isset($this->columns[$row]) || $this->columns[$row]->hide) {
 			throw new BadRequestException;
 		}
-        if ($this->presenter->isAjax()) {
-            $this->onPick($this);
-            $this->redrawControl();
-        }
-    }
+		if ($this->presenter->isAjax()) {
+			$this->onPick($this);
+			$this->redrawControl();
+		}
+	}
 }

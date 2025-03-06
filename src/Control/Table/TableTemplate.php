@@ -13,10 +13,10 @@ use Stepapo\Data\Control\DataTemplate;
 
 class TableTemplate extends DataTemplate
 {
-    /** @var IEntity[][] */ public array $items;
-    /** @var IEntity[] */ public array $columnHeaderItems;
-    /** @var IEntity[] */ public array $columnTotals;
-    public ?IEntity $total;
+	/** @var IEntity[][] */ public array $items;
+	/** @var IEntity[] */ public array $columnHeaderItems;
+	/** @var IEntity[] */ public array $columnTotals;
+	public ?IEntity $total;
 	public ICollection $rowTotalCollection;
 	public ICollection $columnTotalCollection;
 	public ICollection $totalCollection;

@@ -9,7 +9,7 @@ use Stepapo\Data\Control\DataTemplate;
 
 class ValuePickerTemplate extends DataTemplate
 {
-    public ?string $value;
+	public ?string $value;
 	public array $columns;
-    public ?int $valueCollapse;
+	public ?int $valueCollapse;
 }

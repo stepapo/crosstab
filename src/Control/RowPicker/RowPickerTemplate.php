@@ -10,7 +10,7 @@ use Stepapo\Data\Control\DataTemplate;
 
 class RowPickerTemplate extends DataTemplate
 {
-    public ?string $row;
+	public ?string $row;
 	public array $columns;
 	public Column $columnColumn;
 }

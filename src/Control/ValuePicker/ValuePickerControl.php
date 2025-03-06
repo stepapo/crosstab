@@ -17,7 +17,7 @@ use Stepapo\Data\Control\DataControl;
 class ValuePickerControl extends DataControl
 {
 	#[Persistent] public ?string $value = null;
-    public array $onPick = [];
+	public array $onPick = [];
 
 
 	public function __construct(
@@ -36,23 +36,23 @@ class ValuePickerControl extends DataControl
 
 
 	public function render(): void
-    {
-        $this->template->value = $this->value;
+	{
+		$this->template->value = $this->value;
 		$this->template->columns = $this->columns;
-        $this->template->valueCollapse = $this->valueCollapse;
-        $this->template->render($this->main->getView()->valuePickerTemplate);
-    }
+		$this->template->valueCollapse = $this->valueCollapse;
+		$this->template->render($this->main->getView()->valuePickerTemplate);
+	}
 
 
-    public function handlePick(?string $value = null): void
-    {
-        $this->value = $value;
+	public function handlePick(?string $value = null): void
+	{
+		$this->value = $value;
 		if (!isset($this->columns[$value]) || $this->columns[$value]->hide) {
 			throw new BadRequestException;
 		}
-        if ($this->presenter->isAjax()) {
-            $this->onPick($this);
-            $this->redrawControl();
-        }
-    }
+		if ($this->presenter->isAjax()) {
+			$this->onPick($this);
+			$this->redrawControl();
+		}
+	}
 }

@@ -17,7 +17,7 @@ use Stepapo\Data\Control\DataControl;
 class ColumnPickerControl extends DataControl
 {
 	#[Persistent] public ?string $column = null;
-    public array $onPick = [];
+	public array $onPick = [];
 
 
 	public function __construct(
@@ -34,24 +34,24 @@ class ColumnPickerControl extends DataControl
 	}
 
 
-    public function render(): void
-    {
-        $this->template->column = $this->column;
+	public function render(): void
+	{
+		$this->template->column = $this->column;
 		$this->template->columns = $this->columns;
 		$this->template->rowColumn = $this->main->getRowColumn();
-        $this->template->render($this->main->getView()->columnPickerTemplate);
-    }
+		$this->template->render($this->main->getView()->columnPickerTemplate);
+	}
 
 
-    public function handlePick(?string $column = null): void
-    {
-        $this->column = $column;
+	public function handlePick(?string $column = null): void
+	{
+		$this->column = $column;
 		if (!isset($this->columns[$column]) || $this->columns[$column]->hide) {
 			throw new BadRequestException;
 		}
-        if ($this->presenter->isAjax()) {
-            $this->onPick($this);
-            $this->redrawControl();
-        }
-    }
+		if ($this->presenter->isAjax()) {
+			$this->onPick($this);
+			$this->redrawControl();
+		}
+	}
 }
