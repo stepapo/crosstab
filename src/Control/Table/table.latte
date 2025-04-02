@@ -17,7 +17,7 @@
                     <a n:href="sort! 'header', $newDirection" class="ajax" class="no-wrap">
                         {$rowColumn->label}
                         {if $sort == 'header'}
-                            <i n:class="fa, $direction == Nextras\Orm\Collection\ICollection::ASC ? fa-caret-up : fa-caret-down"></i>
+                            <i n:class="fa, $direction == Nextras\Orm\Collection\ICollection::ASC ? fa-chevron-up : fa-chevron-down"></i>
                         {/}
                     </a>
                 {else}
@@ -33,7 +33,7 @@
                         <a n:href="sort! $id, $newDirection" class="ajax">
                             {include $columnColumn->valueTemplateFile ?: $view->valueTemplate, 'entity' => $columnHeaderItem, 'value' => $value, 'linkArgs' => null, 'column' => $columnColumn}
                             {if $columnColumn->name != 'type' && $sort == $id}
-                                <i n:class="fa, $direction == Nextras\Orm\Collection\ICollection::ASC ? fa-caret-up : fa-caret-down"></i>
+                                <i n:class="fa, $direction == Nextras\Orm\Collection\ICollection::ASC ? fa-chevron-up : fa-chevron-down"></i>
                             {/}
                         </a>
                     {else}
@@ -47,7 +47,7 @@
                     <a n:href="sort! 'total', $newDirection" class="ajax">
                         Celkem
                         {if $sort == 'total'}
-                            <i n:class="fa, $direction == Nextras\Orm\Collection\ICollection::ASC ? fa-caret-up : fa-caret-down"></i>
+                            <i n:class="fa, $direction == Nextras\Orm\Collection\ICollection::ASC ? fa-chevron-up : fa-chevron-down"></i>
                         {/}
                     </a>
                 {else}

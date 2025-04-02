@@ -6,8 +6,8 @@
             {if $valueCollapse}
                 {if $valueCollapse == 1}
                     <a n:href="pick! value: $value" class="btn btn-sm btn-primary ms-1 ajax">{$columns[$value]->label}</a>
-                    <button class="btn btn-sm btn-secondary ms-1 dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown">
-                        <span class="sr-only">Toggle Dropdown</span>
+                    <button class="btn btn-sm btn-secondary dropdown-toggle-split ms-1" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-fw fa-ellipsis"></i>
                     </button>
                     <div class="dropdown-menu">
                         <a n:foreach="$columns as $c" n:if="!$c->cross && !$c->hide" n:href="pick! value: $c->name" n:class="dropdown-item, ajax">
@@ -28,8 +28,8 @@
                                 </a>
                             {elseif $it + 1 == $valueCollapse}
                                 <a n:href="pick! value: !$selected ? $value : $c->name" n:class="btn, btn-sm, ms-1, !$selected ? btn-primary : btn-secondary, ms-1, ajax"{if $c->description} data-tooltip="{$c->description}" data-tooltip-position="bottom"{/}>{$selected ? $c->label : $columns[$value]->label}</a>
-                                <button class="btn btn-sm btn-secondary ms-1 dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown">
-                                    <span class="sr-only">Toggle Dropdown</span>
+                                <button class="btn btn-sm btn-secondary dropdown-toggle-split ms-1" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-fw fa-ellipsis"></i>
                                 </button>
                                 <div class="dropdown-menu">
                                     {var $inIt = 0}
@@ -58,8 +58,8 @@
             <a n:href="pick! value: $value" class="btn btn-sm btn-primary ms-1 ajax">
                 {_$columns[$value]->label}
             </a>
-            <button class="btn btn-sm btn-secondary ms-1 dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown">
-                <span class="sr-only">Toggle Dropdown</span>
+            <button class="btn btn-sm btn-secondary dropdown-toggle-split ms-1" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-fw fa-ellipsis"></i>
             </button>
             <div class="dropdown-menu">
                 {foreach $columns as $c}
