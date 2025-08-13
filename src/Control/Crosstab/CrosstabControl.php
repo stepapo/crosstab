@@ -85,7 +85,7 @@ class CrosstabControl extends DataControl implements MainComponent
 	{
 		$visibleColumns = array_filter(
 			$this->crosstab->columns,
-			fn(Column $c) => $c->cross && ($c->filter && !$c->filter->hide) && $c->name !== $this->getColumnColumn()->name && $c->name !== $this->getRowColumn()->name
+			fn(Column $c) => $c->cross && $c->filter && !$c->filter->hide && $c->name !== $this->getColumnColumn()->name && $c->name !== $this->getRowColumn()->name
 		);
 		$control = new FilterListControl($this, $this->crosstab->columns, $visibleColumns);
 		$control->onFilter[] = function (FilterListControl $filterList) {
