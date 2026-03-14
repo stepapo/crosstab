@@ -159,6 +159,7 @@ class TableControl extends DataControl
 		$this->template->direction = $this->direction;
 		$this->template->control = $this;
 		$this->template->main = $this->main;
+		$this->template->invokeFilter = $this->template->getLatte()->invokeFilter(...);
 		$this->template->render($this->main->getView()->tableTemplate);
 	}
 
