@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stepapo\Crosstab\Control\Crosstab;
 
 use Nette\Application\BadRequestException;
+use Nextras\Dbal\Drivers\Exception\QueryException;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Model\IModel;
 use Nextras\Orm\Repository\IRepository;
@@ -43,7 +44,11 @@ class CrosstabControl extends DataControl implements MainComponent
 	public function loadState(array $params): void
 	{
 		parent::loadState($params);
-		$this->filter()->sort();
+		try {
+			$this->filter()->sort();
+		} catch (QueryException $e) {
+			throw new BadRequestException($e->getMessage());
+		}
 	}
 
 
@@ -137,11 +142,7 @@ class CrosstabControl extends DataControl implements MainComponent
 			if (!$value) {
 				continue;
 			}
-			if (!isset($column->filter->options[$value])) {
-				$this->getComponent('filterList')->getComponent('filter')->getComponent($column->name)->value = null;
-				continue;
-			}
-			if ($column->filter->options[$value] instanceof Option && $column->filter->options[$value]->condition) {
+			if (isset($column->filter->options[$value]) && $column->filter->options[$value] instanceof Option && $column->filter->options[$value]->condition) {
 				$this->collection = $this->getCollection()->findBy($column->filter->options[$value]->condition);
 				$this->columnCollection = $this->getColumnCollection()->findBy($column->filter->options[$value]->condition);
 				$this->rowCollection = $this->getRowCollection()->findBy($column->filter->options[$value]->condition);
