@@ -49,7 +49,7 @@ class ColumnPickerControl extends DataControl
 		if (!isset($this->columns[$column]) || $this->columns[$column]->hide) {
 			throw new BadRequestException;
 		}
-		if ($this->presenter->isAjax()) {
+		if ($this->getPresenter()->isAjax()) {
 			$this->onPick($this);
 			$this->redrawControl();
 		}

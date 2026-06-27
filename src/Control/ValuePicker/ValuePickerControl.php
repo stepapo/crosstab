@@ -50,7 +50,7 @@ class ValuePickerControl extends DataControl
 		if (!isset($this->columns[$value]) || $this->columns[$value]->hide) {
 			throw new BadRequestException;
 		}
-		if ($this->presenter->isAjax()) {
+		if ($this->getPresenter()->isAjax()) {
 			$this->onPick($this);
 			$this->redrawControl();
 		}

@@ -49,7 +49,7 @@ class RowPickerControl extends DataControl
 		if (!isset($this->columns[$row]) || $this->columns[$row]->hide) {
 			throw new BadRequestException;
 		}
-		if ($this->presenter->isAjax()) {
+		if ($this->getPresenter()->isAjax()) {
 			$this->onPick($this);
 			$this->redrawControl();
 		}

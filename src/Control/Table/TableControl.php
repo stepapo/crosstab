@@ -195,7 +195,7 @@ class TableControl extends DataControl
 	{
 		$this->sort = $sort;
 		$this->direction = $direction;
-		if ($this->presenter->isAjax()) {
+		if ($this->getPresenter()->isAjax()) {
 			$this->onSort($this);
 			$this->redrawControl();
 		}
