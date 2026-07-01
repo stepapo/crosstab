@@ -34,4 +34,16 @@ class CrosstabView extends Config implements View
 	{
 		return parent::createFromArray(array_merge(self::DEFAULT_VIEW, (array) $config), $key, $skipDefaults, $parentKey);
 	}
+
+
+	public function getFilterTemplate(): string
+	{
+		return $this->filterTemplate;
+	}
+
+
+	public function getFilterListTemplate(): string
+	{
+		return $this->filterListTemplate;
+	}
 }

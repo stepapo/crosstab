@@ -17,10 +17,10 @@ use Stepapo\Crosstab\Crosstab;
 use Stepapo\Crosstab\CrosstabView;
 use Stepapo\Data\Column;
 use Stepapo\Data\Control\DataControl;
+use Stepapo\Data\Control\Filter\FilterControl;
 use Stepapo\Data\Control\FilterList\FilterListControl;
 use Stepapo\Data\Control\MainComponent;
 use Stepapo\Data\Helper;
-use Stepapo\Data\Option;
 
 
 /**
@@ -71,7 +71,6 @@ class CrosstabControl extends DataControl implements MainComponent
 	{
 		$control = new TableControl(
 			$this,
-			$this->crosstab->columns,
 			$this->getCollection(),
 			$this->getRowCollection(),
 			$this->getColumnCollection(),
@@ -104,7 +103,9 @@ class CrosstabControl extends DataControl implements MainComponent
 	{
 		$control = new RowPickerControl($this, $this->crosstab->columns, $this->crosstab->defaultRow);
 		$control->onPick[] = function (RowPickerControl $rowPicker) {
-			$this->getComponent('filterList')->getComponent('filter')->getComponent($rowPicker->row)->value = null;
+			/** @var FilterControl $component */
+			$component = $this->getComponent('filterList')->getComponent('filter')->getComponent($rowPicker->row);
+			$component->value = null;
 			$this->redrawControl();
 		};
 		return $control;
@@ -115,7 +116,9 @@ class CrosstabControl extends DataControl implements MainComponent
 	{
 		$control = new ColumnPickerControl($this, $this->crosstab->columns, $this->crosstab->defaultColumn);
 		$control->onPick[] = function (ColumnPickerControl $columnPicker) {
-			$this->getComponent('filterList')->getComponent('filter')->getComponent($columnPicker->column)->value = null;
+			/** @var FilterControl $component */
+			$component = $this->getComponent('filterList')->getComponent('filter')->getComponent($columnPicker->column);
+			$component->value = null;
 			$this->redrawControl();
 		};
 		return $control;
@@ -138,11 +141,13 @@ class CrosstabControl extends DataControl implements MainComponent
 			if (!$column->filter || $column->name === $this->getColumnColumn()->name || $column->name === $this->getRowColumn()->name) {
 				continue;
 			}
-			$value = $this->getComponent('filterList')->getComponent('filter')->getComponent($column->name)->value;
+			/** @var FilterControl $component */
+			$component = $this->getComponent('filterList')->getComponent('filter')->getComponent($column->name);
+			$value = $component->value;
 			if (!$value) {
 				continue;
 			}
-			if (isset($column->filter->options[$value]) && $column->filter->options[$value] instanceof Option && $column->filter->options[$value]->condition) {
+			if (isset($column->filter->options[$value]) && $column->filter->options[$value]->condition) {
 				$this->collection = $this->getCollection()->findBy($column->filter->options[$value]->condition);
 				$this->columnCollection = $this->getColumnCollection()->findBy($column->filter->options[$value]->condition);
 				$this->rowCollection = $this->getRowCollection()->findBy($column->filter->options[$value]->condition);
@@ -251,8 +256,10 @@ class CrosstabControl extends DataControl implements MainComponent
 		$addBy = true;
 		foreach ($this->getCrossColumnNames() as $columnName) {
 			$c = $this->crosstab->columns[$columnName];
+			/** @var FilterControl|null $component */
+			$component = $this->getComponent('filterList')->getComponent('filter')->getComponent($columnName); // @phpstan-ignore varTag.type
 			$addFilterColumn = $c->filter && $columnName !== $this->getColumnColumn()->name && $columnName !== $this->getRowColumn()->name
-				? (bool) $this->getComponent('filterList')->getComponent('filter')->getComponent($columnName)?->value
+				? (bool) $component?->value
 				: false;
 			if (($checkRow && $rowColumnName === $columnName) || ($checkColumn && $columnColumnName === $columnName) || $addFilterColumn) {
 				if ($addBy) {

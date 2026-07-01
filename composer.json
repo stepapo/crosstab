@@ -1,25 +1,25 @@
 {
-    "name": "stepapo/crosstab",
-    "type": "library",
-    "description": "Component for Nette Framework and Nextras ORM, that helps generate crosstabs from collections with sorting and filtering capability.",
-    "keywords": ["nette", "nextras", "table", "crosstab", "analytics", "component"],
-    "homepage": "https://github.com/stepapo/crosstab",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Štěpán Postler"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/stepapo/crosstab/issues"
-    },
-    "require": {
-        "php": ">=8.3",
-        "stepapo/data": "^1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Stepapo\\Crosstab\\": "src/"
-        }
-    }
+	"name": "stepapo/crosstab",
+	"type": "library",
+	"description": "Component for Nette Framework and Nextras ORM, that helps generate crosstabs from collections with sorting and filtering capability.",
+	"keywords": ["nette", "nextras", "table", "crosstab", "analytics", "component"],
+	"homepage": "https://github.com/stepapo/crosstab",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Štěpán Postler"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/stepapo/crosstab/issues"
+	},
+	"require": {
+		"php": ">=8.5",
+		"stepapo/data": "^1.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Stepapo\\Crosstab\\": "src/"
+		}
+	}
 }

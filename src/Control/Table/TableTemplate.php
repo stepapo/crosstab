@@ -6,6 +6,7 @@ namespace Stepapo\Crosstab\Control\Table;
 
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
+use Stepapo\Crosstab\Control\Crosstab\CrosstabControl;
 use Stepapo\Crosstab\CrosstabView;
 use Stepapo\Data\Column;
 use Stepapo\Data\Control\DataTemplate;
@@ -34,4 +35,6 @@ class TableTemplate extends DataTemplate
 	public Column $columnColumn;
 	public Column $valueColumn;
 	public TableControl $control;
+	public CrosstabControl $main;
+	public \Closure $invokeFilter;
 }

@@ -6,6 +6,7 @@ namespace Stepapo\Crosstab\Control\Table;
 
 use Collator;
 use Nette\Application\Attributes\Persistent;
+use Nette\Utils\Arrays;
 use Nextras\Orm\Collection\ICollection;
 use Nextras\Orm\Entity\IEntity;
 use Nextras\Orm\Relationships\HasMany;
@@ -24,10 +25,8 @@ class TableControl extends DataControl
 	/** @var \Closure[] */ public array $onSort = [];
 
 
-	/** @param Column[] $columns */
 	public function __construct(
 		private CrosstabControl $main,
-		private array $columns,
 		private ICollection $collection,
 		private ICollection $rowTotalCollection,
 		private ICollection $columnTotalCollection,
@@ -73,35 +72,29 @@ class TableControl extends DataControl
 				$max = $value;
 			}
 		}
-		if ($this->rowTotalCollection) {
-			foreach ($this->rowTotalCollection as $item) {
-				$items[$item->getRawValue($this->main->getRowColumn()->name)]['total'] = $item;
-				$value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
-				if ($value !== null && ($rowMin === null || $value < $rowMin)) {
-					$rowMin = $value;
-				}
-				if ($value !== null && ($rowMax === null || $value > $rowMax)) {
-					$rowMax = $value;
-				}
+		foreach ($this->rowTotalCollection as $item) {
+			$items[$item->getRawValue($this->main->getRowColumn()->name)]['total'] = $item;
+			$value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
+			if ($value !== null && ($rowMin === null || $value < $rowMin)) {
+				$rowMin = $value;
+			}
+			if ($value !== null && ($rowMax === null || $value > $rowMax)) {
+				$rowMax = $value;
 			}
 		}
-		if ($this->columnTotalCollection) {
-			$columnTotals = [];
-			foreach ($this->columnTotalCollection as $item) {
-				$columnTotals[$item->getRawValue($this->main->getColumnColumn()->name)] = $item;
-				$value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
-				if ($value !== null && ($columnMin === null || $value < $columnMin)) {
-					$columnMin = $value;
-				}
-				if ($value !== null && ($columnMax === null || $value > $columnMax)) {
-					$columnMax = $value;
-				}
+		$columnTotals = [];
+		foreach ($this->columnTotalCollection as $item) {
+			$columnTotals[$item->getRawValue($this->main->getColumnColumn()->name)] = $item;
+			$value = $this->getValue($item, $this->main->getValueColumn()->columnName) ? $this->getValue($item, $this->main->getValueColumn()->columnName)[0] : null;
+			if ($value !== null && ($columnMin === null || $value < $columnMin)) {
+				$columnMin = $value;
 			}
-			$this->template->columnTotals = $columnTotals;
+			if ($value !== null && ($columnMax === null || $value > $columnMax)) {
+				$columnMax = $value;
+			}
 		}
-		if ($this->totalCollection) {
-			$this->template->total = $this->totalCollection->limitBy(1)->fetch();
-		}
+		$this->template->columnTotals = $columnTotals;
+		$this->template->total = $this->totalCollection->limitBy(1)->fetch();
 		$collator = new Collator('cs_CZ');
 		uasort($columnHeaderItems, function($a, $b) use($collator) {
 			$aHeader = $this->getValue($a, $this->main->getColumnColumn()->columnName)[0];
@@ -164,7 +157,7 @@ class TableControl extends DataControl
 	}
 
 
-	public function getValue(IEntity $entity, $columnName): ?array
+	public function getValue(IEntity $entity, string $columnName): ?array
 	{
 		$columnNames = explode('.', $columnName);
 		$values = [$entity];
@@ -196,7 +189,7 @@ class TableControl extends DataControl
 		$this->sort = $sort;
 		$this->direction = $direction;
 		if ($this->getPresenter()->isAjax()) {
-			$this->onSort($this);
+			Arrays::invoke($this->onSort, $this);
 			$this->redrawControl();
 		}
 	}
